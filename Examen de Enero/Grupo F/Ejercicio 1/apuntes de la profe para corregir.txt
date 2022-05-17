@@ -1,0 +1,39 @@
+
+
+
+Hola Luis Alberto,
+Precondición: ok
+Postcondición: te falta escribir r= max….
+
+Postcondicion
+Al predicado que has escrito: 
+
+	consecutivos(v,p,q) = Forall i: p <= i < q: (v[i]-v[i+1]=1)
+le falta el valor absoluto:
+	consecutivos(v,p,q) = Forall i: p <= i < q: |v[i]-v[i+1]|=1)
+	
+Además, tal como lo has expresado se trata de un intervalo [p,q] con ambos extremos incluidos desde el punto de vista de los accesos:
+|v[p]-v[p+1]|=1 && …&& |v[q-1]-v[q]|=1
+La longitud de ese segmento es q-p+1, no q-p.
+Por otra parte escribes para r, 0<=p<q<N, lo cual implica que no pueden ser vacios, ya que p<q, lo cual hace que en el caso cuando v.size()=0, r esté indefinido.
+Hay varias formas de arreglar esto. Si quieres mantener tu predicado consecutivos, y la precondición v.size()>=0, tienes que permitir segmentos vacíos:
+r = max p,q: 0<=p<=q+1 <= N && consecutivos(v,p,q): q-p+1
+Así, si N=0, solo hay un intervalo posible [0,-1] de longitud 0.
+
+
+
+Invariante
+En el invariante, la variable maximo es el resultado y no aparece ninguna r así que quítala. Tienes que adaptar igualmente 
+máximo = max p,q: 0<=p<=q+1 <= i && consecutivos(v,p,q): q-p+1
+tu has escrito una u que no aparece luego en la expresión. 
+La variable cont esta mal, se entiende que quieres contar los consecutivos del segmento actual 
+" #w::0<=p<q< i” no tiene sentido
+Sería:
+cont = max k:0<=k<=i && consecutivos(v,k,i-1):(i-1)-k+1
+
+Otra posibilidad sería considerar los intervalos abiertos por la derecha.
+
+
+Justificación del coste: es insuficiente: en todos los casos recorre el vector completo. El bucle da N vueltas cada una de ellas de coste constante y por tanto el coste está en O(N). Te falta decir nº de vueltas y coste de cada una de las vueltas. 
+
+Un saludo
